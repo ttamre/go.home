@@ -13,35 +13,28 @@ COVERAGE_HTML 	= $(BUILD_FOLDER)/coverage.html
 
 
 # Default target
-default: run
+default: clean run
 
 # Build target
 build:
-	$(GOBUILD) -o $(BINARY_NAME)
+	@$(GOBUILD) -o $(BINARY_NAME)
 
 # Build and run target (dont forget to serve frontend with `npm run build)
 run: build
-	./$(BINARY_NAME)
-
-# Build and run target, then run the frontend in development mode
-dev: build
-	./$(BINARY_NAME) &
-	cd frontend && npm start &
-	wait
+	@./$(BINARY_NAME)
 
 # Clean target
 clean:
-	$(GOCLEAN)
-	rm -rf $(BUILD_FOLDER)
+	@$(GOCLEAN)
+	@rm -rf $(BUILD_FOLDER)
 
 # Test target
 test:
-	mkdir -p $(BUILD_FOLDER)
-	$(GOTEST) -v -coverprofile=$(COVERAGE_OUT) ./...
-	go tool cover -html=$(COVERAGE_OUT) -o $(COVERAGE_HTML)
+	@mkdir -p $(BUILD_FOLDER)
+	@$(GOTEST) -v -coverprofile=$(COVERAGE_OUT) ./...
+	@go tool cover -html=$(COVERAGE_OUT) -o $(COVERAGE_HTML)
     
 
 # Install dependencies
 deps:
-	$(GOGET) -v ./...
-
+	@$(GOGET) -v ./...
