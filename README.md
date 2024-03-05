@@ -35,11 +35,13 @@
 <p style="font-family:monospace">see <b>package.json</b> for dev/test commands</p>
 
 ```bash
-# frontend
+# process 1 (frontend)
 cd frontend
 npm run build
 
-
+# process 2 (backend)
+cd backend
+make run
 ```
 
 <!-- LICENSE -->
