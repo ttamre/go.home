@@ -22,8 +22,21 @@ func ScrapeZillow() {
 	var listings []ZillowListing
 
 	// Visit Zillow
-	fmt.Println("Scraping data from Zillow...")
+	fmt.Println("\nScraping data from Zillow...")
 	c := colly.NewCollector()
+
+
+	c.OnRequest(func(r *colly.Request) {
+		fmt.Println("REQUEST:", r.URL)
+	})
+
+	c.OnError(func(r *colly.Response, err error) {
+		fmt.Println("ERROR:", r.Request.URL, "failed with response:", r, "\nError:", err)
+	})
+
+	c.OnResponse(func(r *colly.Response) {
+		fmt.Println("RESPONSE:", r.Request.URL)
+	})
 
 	// Called after OnResponse() if content is HTML
 	c.OnHTML("article", func(e *colly.HTMLElement) {
@@ -72,7 +85,7 @@ func ScrapeZillow() {
 
 		listings = append(listings, listing)
 	})
-
+	c.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
 	c.Visit("https://www.zillow.com/homes/Edmonton,-AB_rb/")
 	fmt.Println(listings)
 }
